@@ -4,29 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>X Engagement Platform</title>
+    <!-- Modern Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <!-- "How It Works" Section (Visible when logged out) -->
-    <div id="how-to-container">
-        <div class="how-to-card">
-            <h2>How It Works</h2>
-            <ol class="how-to-steps">
-                <li><span>1</span> <strong>Register & Get Points:</strong> Sign up for an account and get 60 free points to start.</li>
-                <li><span>2</span> <strong>Complete Tasks:</strong> "Start" a task, complete it, and click "Mark as Complete" to earn points.</li>
-                <li><span>3</span> <strong>Promote Your Posts:</strong> Add your own X (Twitter) post URL and let others engage with your content.</li>
-            </ol>
-        </div>
-    </div>
-
     <!-- This container shows when user is LOGGED OUT -->
     <div id="auth-container">
+        
+        <!-- "How It Works" Card -->
+        <div class="info-card" id="how-to-container">
+            <h3>How It Works</h3>
+            <ol class="how-to-list">
+                <li>
+                    <strong>1. Sign Up for Free</strong>
+                    <p>Get 60 starter points just for joining.</p>
+                </li>
+                <li>
+                    <strong>2. Earn More Points</strong>
+                    <p>Complete simple tasks (likes/comments) to earn points from other users.</p>
+                </li>
+                <li>
+                    <strong>3. Get Engagement</strong>
+                    <p>Spend your points to get real users to like and comment on your own X posts!</p>
+                </li>
+            </ol>
+        </div>
+        
+        <!-- Login/Register Card -->
         <div class="form-card">
             <h2 id="form-title">Login</h2>
             <p id="auth-error" class="error-text"></p>
             <input type="text" id="auth-username" placeholder="Username">
-            <input type="email" id="auth-email" placeholder="Email (for registration)" style="display: none;">
+            <input type="email" id="auth-email" placeholder="Email (for registration)">
             <input type="password" id="auth-password" placeholder="Password">
             <button id="auth-submit-btn">Login</button>
             <a href="#" id="toggle-form-link">Need to register?</a>
@@ -38,26 +51,53 @@
         
         <!-- Header -->
         <header>
-            <div class="logo">Yap 4 Yap</div>
+            <div class="logo">Yap4Yap Beta Version</div>
             <div class="user-info">
                 <span id="user-display"></span>
                 <span id="points-display" class="points-badge"></span>
-                <button id="logout-btn" class="btn-danger">Logout</button>
+                <button id="logout-btn" class="btn-danger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+                        <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                    </svg>
+                    Logout
+                </button>
             </div>
         </header>
 
         <!-- Stats Cards -->
         <div class="stats-grid">
             <div class="stat-card">
-                <h3>My Points</h3>
+                <h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 16c.026 0 .051.005.076.015.26 0 .47-.192.484-.428L8.7 12.28c.07-.17.24-.28.43-.28h.028c.22 0 .41-.14.48-.35c.07-.23.02-.48-.12-.64l-2.07-2.32c-.17-.18-.42-.23-.64-.12s-.36.31-.36.55v2.79c0 .22.18.4.4.4zm.092-11.058A.5.5 0 0 1 8.5.5h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V1.707l-4.146 4.147a.5.5 0 0 1-.708-.708L13.293 1H8.5a.5.5 0 0 1-.408-.058z"/>
+                        <path d="M16 8.5a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-5a.5.5 0 0 1 1 0v4.293l4.146-4.147a.5.5 0 0 1 .708.708L11.707 7.5H16a.5.5 0 0 1 .5.5z"/>
+                        <path d="M.5 8.5A.5.5 0 0 1 1 8h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V9.707l-4.146 4.147a.5.5 0 0 1-.708-.708L4.293 9H.5a.5.5 0 0 1-.5-.5z"/>
+                        <path d="M8 0a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V1.707L3.354 5.854a.5.5 0 1 1-.708-.708L6.793 1H2.5a.5.5 0 0 1 0-1h5.5A.5.5 0 0 1 8 0z"/>
+                    </svg>
+                    My Points
+                </h3>
                 <p id="stat-points">0</p>
             </div>
             <div class="stat-card">
-                <h3>Tasks Completed</h3>
+                <h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M2.5 8.01a.5.5 0 0 0 0-1H.5a.5.5 0 0 0 0 1h2zm3.203-2.854a.5.5 0 1 0-.707-.708L3.646 5.854a.5.5 0 1 0 .707.708l1.35-1.35zm-1.01 5.708a.5.5 0 1 0 .707.708l1.35-1.35a.5.5 0 1 0-.707-.708L4.696 10.864zM8 2.5a.5.5 0 0 0-1 0V.5a.5.5 0 0 0 1 0v2z"/>
+                        <path fill-rule="evenodd" d="M8 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM8 3a5 5 0 1 0 0 10A5 5 0 0 0 8 3z"/>
+                        <path d="M10.854 5.854a.5.5 0 1 0-.708-.708l-1.35 1.35a.5.5 0 1 0 .708.708l1.35-1.35zm1.35 1.35a.5.5 0 1 0 .708.708l1.35-1.35a.5.5 0 1 0-.708-.708l-1.35 1.35zm-1.01 5.708a.5.5 0 1 0 .708.708l1.35-1.35a.5.5 0 1 0-.708-.708l-1.35 1.35zM13.5 8.01a.5.5 0 0 0 0-1H16a.5.5 0 0 0 0 1h-2.5z"/>
+                    </svg>
+                    Tasks Completed
+                </h3>
                 <p id="stat-tasks">0</p>
             </div>
             <div class="stat-card">
-                <h3>My Posts</h3>
+                <h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+                        <path d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0zM7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z"/>
+                    </svg>
+                    My Posts
+                </h3>
                 <p id="stat-posts">0</p>
             </div>
         </div>
@@ -77,7 +117,12 @@
                             <label><input type="radio" name="taskType" value="comment"> Comment (20 pts)</label>
                             <label><input type="radio" name="taskType" value="both"> Both (30 pts)</label>
                         </div>
-                        <button type="submit" id="create-post-btn">Create Post (Free)</button>
+                        <button type="submit" id="create-post-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                            </svg>
+                            Create Post (Free)
+                        </button>
                     </form>
                 </div>
 
@@ -101,7 +146,7 @@
         </div>
     </div>
 
-    <!-- Firebase SDKs -->
+    <!-- Firebase SDKs (using compat libraries for your existing code) -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
