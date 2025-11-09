@@ -63,111 +63,126 @@ const statPosts = document.getElementById('stat-posts');
 // --- Auth UI Toggle ---
 let isRegisterMode = false;
 
-toggleFormLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    isRegisterMode = !isRegisterMode;
-    
-    authFormTitle.innerText = isRegisterMode ? 'Register' : 'Login';
-    authSubmitBtn.innerText = isRegisterMode ? 'Register' : 'Login';
-    authEmailInput.style.display = isRegisterMode ? 'block' : 'none';
-    authUsernameInput.placeholder = isRegisterMode ? 'Choose a Username' : 'Username';
-    authError.style.display = 'none';
-});
+// NOTE: Check if elements exist before adding listeners,
+// because app.js is now loaded on login.html, but not index.html
+if (toggleFormLink) {
+    toggleFormLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        isRegisterMode = !isRegisterMode;
+        
+        authFormTitle.innerText = isRegisterMode ? 'Register' : 'Login';
+        authSubmitBtn.innerText = isRegisterMode ? 'Register' : 'Login';
+        authEmailInput.style.display = isRegisterMode ? 'block' : 'none';
+        authUsernameInput.placeholder = isRegisterMode ? 'Choose a Username' : 'Username';
+        authError.style.display = 'none';
+    });
+}
 
 // --- Phase 1: Authentication Logic ---
 
 // Handle Register / Login
-authSubmitBtn.addEventListener('click', async () => {
-    const email = authEmailInput.value;
-    const password = authPasswordInput.value;
-    const username = authUsernameInput.value;
+if (authSubmitBtn) {
+    authSubmitBtn.addEventListener('click', async () => {
+        const email = authEmailInput.value;
+        const password = authPasswordInput.value;
+        const username = authUsernameInput.value;
 
-    authError.style.display = 'none';
-    authSubmitBtn.disabled = true;
-    authSubmitBtn.innerText = 'Please wait...';
+        authError.style.display = 'none';
+        authSubmitBtn.disabled = true;
+        authSubmitBtn.innerText = 'Please wait...';
 
-    try {
-        if (isRegisterMode) {
-            // --- Register Logic (Feature 1.1) ---
-            if (!username || !email || !password) {
-                throw new Error('All fields are required for registration.');
+        try {
+            if (isRegisterMode) {
+                // --- Register Logic (Feature 1.1) ---
+                if (!username || !email || !password) {
+                    throw new Error('All fields are required for registration.');
+                }
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+
+                // --- Create user profile in Realtime Database (Feature 1.5) ---
+                const isAdmin = username.toLowerCase() === ADMIN_USERNAME; // Feature 1.4
+                const newUserProfile = {
+                    uid: user.uid,
+                    username: username,
+                    email: user.email,
+                    // --- THIS IS THE FIX ---
+                    // Store a normal number. The "isAdmin" flag will handle the rest.
+                    points: STARTING_POINTS, 
+                    // --- END FIX ---
+                    isAdmin: isAdmin, // Feature 5.1
+                    tasksCompleted: 0,
+                    postsCreated: 0,
+                    completedTasks: {} // Store completed task IDs here
+                };
+
+                // Set the user data in the database
+                // This is the line that was failing
+                await db.ref('users/' + user.uid).set(newUserProfile);
+
+            } else {
+                // --- Login Logic (Feature 1.2) ---
+                if (!username || !password) {
+                    throw new Error('Username and Password are required.');
+                }
+                
+                const usersSnapshot = await db.ref('users').orderByChild('username').equalTo(username).once('value');
+                if (!usersSnapshot.exists()) {
+                    throw new Error('Username not found.');
+                }
+                
+                const userData = Object.values(usersSnapshot.val())[0];
+                await auth.signInWithEmailAndPassword(userData.email, password);
             }
-            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-            const user = userCredential.user;
-
-            // --- Create user profile in Realtime Database (Feature 1.5) ---
-            const isAdmin = username.toLowerCase() === ADMIN_USERNAME; // Feature 1.4
-            const newUserProfile = {
-                uid: user.uid,
-                username: username,
-                email: user.email,
-                // --- THIS IS THE FIX ---
-                // Store a normal number. The "isAdmin" flag will handle the rest.
-                points: STARTING_POINTS, 
-                // --- END FIX ---
-                isAdmin: isAdmin, // Feature 5.1
-                tasksCompleted: 0,
-                postsCreated: 0,
-                completedTasks: {} // Store completed task IDs here
-            };
-
-            // Set the user data in the database
-            // This is the line that was failing
-            await db.ref('users/' + user.uid).set(newUserProfile);
-
-        } else {
-            // --- Login Logic (Feature 1.2) ---
-            if (!username || !password) {
-                throw new Error('Username and Password are required.');
-            }
-            
-            const usersSnapshot = await db.ref('users').orderByChild('username').equalTo(username).once('value');
-            if (!usersSnapshot.exists()) {
-                throw new Error('Username not found.');
-            }
-            
-            const userData = Object.values(usersSnapshot.val())[0];
-            await auth.signInWithEmailAndPassword(userData.email, password);
+        } catch (error) {
+            authError.innerText = error.message;
+            authError.style.display = 'block';
+        } finally {
+            authSubmitBtn.disabled = false;
+            authSubmitBtn.innerText = isRegisterMode ? 'Register' : 'Login';
         }
-    } catch (error) {
-        authError.innerText = error.message;
-        authError.style.display = 'block';
-    } finally {
-        authSubmitBtn.disabled = false;
-        authSubmitBtn.innerText = isRegisterMode ? 'Register' : 'Login';
-    }
-});
+    });
+}
 
 // --- Auth State Listener ---
 auth.onAuthStateChanged(user => {
-    if (user) {
-        // User is logged in
-        listenToUserData(user.uid); 
-        listenToAllPosts(); 
-        listenToAllUsers();
-        
-        authContainer.style.display = 'none';
-        appContainer.style.display = 'block';
-    } else {
-        // User is logged out
-        
-        if (currentUser) {
-            // Stop listening to the specific user's data
-            db.ref('users/' + currentUser.uid).off(); 
-        }
-        db.ref('posts').off(); // Stop listening to all posts
-        db.ref('users').off(); // Stop listening to all users
+    
+    // Only run auth UI logic if we are on the login page
+    if (authContainer) {
+        if (user) {
+            // User is logged in
+            listenToUserData(user.uid); 
+            listenToAllPosts(); 
+            listenToAllUsers();
+            
+            authContainer.style.display = 'none';
+            appContainer.style.display = 'block';
+        } else {
+            // User is logged out
+            
+            if (currentUser) {
+                // Stop listening to the specific user's data
+                db.ref('users/' + currentUser.uid).off(); 
+            }
+            db.ref('posts').off(); // Stop listening to all posts
+            db.ref('users').off(); // Stop listening to all users
 
-        currentUser = null;
-        authContainer.style.display = 'flex';
-        appContainer.style.display = 'none';
+            currentUser = null;
+            authContainer.style.display = 'flex';
+            appContainer.style.display = 'none';
+        }
     }
 });
 
 // --- Logout ---
-logoutBtn.addEventListener('click', () => {
-    auth.signOut();
-});
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+        auth.signOut().then(() => {
+            // Redirect to login page after sign out
+            window.location.href = 'login.html';
+        });
+    });
+}
 
 // --- Phase 2: Realtime Database Listeners (Feature 7) ---
 
@@ -201,7 +216,7 @@ function listenToAllUsers() {
 // --- Phase 3: Update UI & Render Lists ---
 
 function updateUIWithUserData() {
-    if (!currentUser) return;
+    if (!currentUser || !userDisplay) return; // Check if elements exist
     
     const pointsStr = currentUser.isAdmin ? '∞' : currentUser.points;
     
@@ -220,7 +235,8 @@ function updateUIWithUserData() {
 }
 
 function renderAllTasks() {
-    if (!currentUser || !allUsers) return; // Wait for all data
+    // Check if elements exist
+    if (!currentUser || !allUsers || !availableTasksList || !myPostsList) return;
     
     availableTasksList.innerHTML = '';
     myPostsList.innerHTML = '';
@@ -313,72 +329,75 @@ function createTaskCard(post, type) {
 }
 
 // --- Phase 4: Post Creation (Feature 4) ---
+if (createPostForm) {
+    createPostForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        postError.style.display = 'none';
 
-createPostForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    postError.style.display = 'none';
+        if (Object.keys(myPosts).length > 0) {
+            postError.innerText = 'You may only have 1 active post. Please remove your old post first.';
+            postError.style.display = 'block';
+            return;
+        }
 
-    if (Object.keys(myPosts).length > 0) {
-        postError.innerText = 'You may only have 1 active post. Please remove your old post first.';
-        postError.style.display = 'block';
-        return;
-    }
+        createPostBtn.disabled = true;
+        createPostBtn.innerText = 'Posting...';
 
-    createPostBtn.disabled = true;
-    createPostBtn.innerText = 'Posting...';
+        const url = postUrlInput.value;
+        const taskType = createPostForm.querySelector('input[name="taskType"]:checked').value;
 
-    const url = postUrlInput.value;
-    const taskType = createPostForm.querySelector('input[name="taskType"]:checked').value;
-
-    if (!url.includes('x.com') && !url.includes('twitter.com')) {
-        postError.innerText = 'Please enter a valid X.com or Twitter.com URL.';
-        postError.style.display = 'block';
-        createPostBtn.disabled = false;
-        createPostBtn.innerText = 'Create Post (Free)';
-        return;
-    }
-
-    try {
-        const newPost = {
-            url: url,
-            taskType: taskType,
-            creatorId: currentUser.uid,
-            creatorUsername: currentUser.username,
-            createdAt: firebase.database.ServerValue.TIMESTAMP
-        };
-        
-        // This command requires the "posts" write rule
-        await db.ref('posts').push(newPost);
-        // This command requires the "users" write rule
-        await db.ref('users/' + currentUser.uid + '/postsCreated').set((currentUser.postsCreated || 0) + 1);
-
-        postUrlInput.value = '';
-    } catch (error) {
-        postError.innerText = error.message;
-        postError.style.display = 'block';
-    } finally {
-        createPostBtn.disabled = false;
-        createPostBtn.innerText = 'Create Post (Free)';
-    }
-});
-
-myPostsList.addEventListener('click', async (e) => {
-    if (e.target.classList.contains('remove-post-btn')) {
-        const btn = e.target;
-        const postId = btn.dataset.postId;
-
-        btn.disabled = true;
-        btn.innerText = 'Removing...';
+        if (!url.includes('x.com') && !url.includes('twitter.com')) {
+            postError.innerText = 'Please enter a valid X.com or Twitter.com URL.';
+            postError.style.display = 'block';
+            createPostBtn.disabled = false;
+            createPostBtn.innerText = 'Create Post (Free)';
+            return;
+        }
 
         try {
-            await db.ref('posts/' + postId).remove();
+            const newPost = {
+                url: url,
+                taskType: taskType,
+                creatorId: currentUser.uid,
+                creatorUsername: currentUser.username,
+                createdAt: firebase.database.ServerValue.TIMESTAMP
+            };
+            
+            // This command requires the "posts" write rule
+            await db.ref('posts').push(newPost);
+            // This command requires the "users" write rule
+            await db.ref('users/' + currentUser.uid + '/postsCreated').set((currentUser.postsCreated || 0) + 1);
+
+            postUrlInput.value = '';
         } catch (error) {
-            alert('Could not remove post: ' + error.message);
-            btn.disabled = false;
-            btn.innerText = 'Remove Post';
+            postError.innerText = error.message;
+            postError.style.display = 'block';
+        } finally {
+            createPostBtn.disabled = false;
+            createPostBtn.innerText = 'Create Post (Free)';
         }
-    }
-});
+    });
+}
+
+if (myPostsList) {
+    myPostsList.addEventListener('click', async (e) => {
+        if (e.target.classList.contains('remove-post-btn')) {
+            const btn = e.target;
+            const postId = btn.dataset.postId;
+
+            btn.disabled = true;
+            btn.innerText = 'Removing...';
+
+            try {
+                await db.ref('posts/' + postId).remove();
+            } catch (error) {
+                alert('Could not remove post: ' + error.message);
+                btn.disabled = false;
+                btn.innerText = 'Remove Post';
+            }
+        }
+    });
+}
 
 
 // --- Phase 5: Task Verification (Hidden Timer Logic) ---
@@ -409,90 +428,92 @@ function startVerification(button, post, postId) {
             return;
         }
 
-        activeTaskTimers[postId] = { timeSpent: timeSpent, requiredTime: requiredTime, tabClosed: false, interval: timerInterval, tab: newTab };
+        activeTaskTimtimers[postId] = { timeSpent: timeSpent, requiredTime: requiredTime, tabClosed: false, interval: timerInterval, tab: newTab };
 
     }, 1000); 
     
     activeTaskTimers[postId] = { timeSpent: 0, requiredTime: requiredTime, tabClosed: false, interval: timerInterval, tab: newTab };
 }
 
-availableTasksList.addEventListener('click', async (e) => {
-    const btn = e.target;
-    
-    if (btn.classList.contains('start-task-btn')) {
-        const postId = btn.dataset.postId;
-        const post = allPosts[postId];
+if (availableTasksList) {
+    availableTasksList.addEventListener('click', async (e) => {
+        const btn = e.target;
         
-        btn.disabled = true;
-        btn.innerText = 'Checking...';
-
-        const postCreatorRef = db.ref('users/' + post.creatorId);
-        const postCreatorSnap = await postCreatorRef.once('value');
-        const postCreator = postCreatorSnap.val();
-        
-        const requiredPoints = TASK_REWARDS[post.taskType];
-
-        if (!postCreator) {
-             alert('Error: The creator of this post no longer exists.');
-             btn.innerText = 'Task Error';
-             return;
-        }
-
-        if (!postCreator.isAdmin && postCreator.points < requiredPoints) {
-            alert('Error: The creator of this post does not have enough points to pay for this task.');
-            btn.innerText = 'Creator Has No Points';
-            return;
-        }
-        
-        startVerification(btn, post, postId);
-    }
-
-    else if (btn.classList.contains('pending-complete-btn')) {
-        const postId = btn.dataset.postId;
-        const post = allPosts[postId];
-        const verificationUI = document.getElementById(`verify-${postId}`);
-        const taskTimer = activeTaskTimers[postId];
-
-        if (!taskTimer) {
-            verificationUI.innerHTML = `<p class="error-text" style="display:block;">Please start the task first.</p>`;
-            setTimeout(() => { verificationUI.innerHTML = ''; }, 3000);
-            return;
-        }
-
-        if (taskTimer.timeSpent >= taskTimer.requiredTime) {
+        if (btn.classList.contains('start-task-btn')) {
+            const postId = btn.dataset.postId;
+            const post = allPosts[postId];
+            
             btn.disabled = true;
-            btn.innerText = 'Completing...';
+            btn.innerText = 'Checking...';
 
-            clearInterval(taskTimer.interval);
-            // --- THIS IS THE FIX (removed extra dot) ---
-            if (taskTimer.tab && !taskTimer.tab.closed) {
-            // --- END FIX ---
-                taskTimer.tab.close();
+            const postCreatorRef = db.ref('users/' + post.creatorId);
+            const postCreatorSnap = await postCreatorRef.once('value');
+            const postCreator = postCreatorSnap.val();
+            
+            const requiredPoints = TASK_REWARDS[post.taskType];
+
+            if (!postCreator) {
+                 alert('Error: The creator of this post no longer exists.');
+                 btn.innerText = 'Task Error';
+                 return;
+            }
+
+            if (!postCreator.isAdmin && postCreator.points < requiredPoints) {
+                alert('Error: The creator of this post does not have enough points to pay for this task.');
+                btn.innerText = 'Creator Has No Points';
+                return;
             }
             
-            try {
-                // This command requires write access to /users/$uid (for two users)
-                await completeTask(postId, post);
-                alert('Task Complete! Points have been added to your account.');
-                delete activeTaskTimers[postId];
-            } catch (error) {
-                alert('An error occurred: ' + error.message);
-                btn.disabled = false;
-                btn.innerText = 'Mark as Complete';
-            }
-        } else {
-            verificationUI.innerHTML = `<p class="error-text" style="display:block;">Complete Task Right or try again</p>`;
-            setTimeout(() => { verificationUI.innerHTML = ''; }, 3000);
+            startVerification(btn, post, postId);
+        }
 
-            if (taskTimer.tabClosed) {
-                btn.innerText = 'Start Task';
-                btn.classList.remove('btn-success', 'pending-complete-btn');
-                btn.classList.add('start-task-btn');
-                delete activeTaskTimers[postId];
+        else if (btn.classList.contains('pending-complete-btn')) {
+            const postId = btn.dataset.postId;
+            const post = allPosts[postId];
+            const verificationUI = document.getElementById(`verify-${postId}`);
+            const taskTimer = activeTaskTimers[postId];
+
+            if (!taskTimer) {
+                verificationUI.innerHTML = `<p class="error-text" style="display:block;">Please start the task first.</p>`;
+                setTimeout(() => { verificationUI.innerHTML = ''; }, 3000);
+                return;
+            }
+
+            if (taskTimer.timeSpent >= taskTimer.requiredTime) {
+                btn.disabled = true;
+                btn.innerText = 'Completing...';
+
+                clearInterval(taskTimer.interval);
+                // --- THIS IS THE FIX (removed extra dot) ---
+                if (taskTimer.tab && !taskTimer.tab.closed) {
+                // --- END FIX ---
+                    taskTimer.tab.close();
+                }
+                
+                try {
+                    // This command requires write access to /users/$uid (for two users)
+                    await completeTask(postId, post);
+                    alert('Task Complete! Points have been added to your account.');
+                    delete activeTaskTimers[postId];
+                } catch (error) {
+                    alert('An error occurred: ' + error.message);
+                    btn.disabled = false;
+                    btn.innerText = 'Mark as Complete';
+                }
+            } else {
+                verificationUI.innerHTML = `<p class="error-text" style="display:block;">Complete Task Right or try again</p>`;
+                setTimeout(() => { verificationUI.innerHTML = ''; }, 3000);
+
+                if (taskTimer.tabClosed) {
+                    btn.innerText = 'Start Task';
+                    btn.classList.remove('btn-success', 'pending-complete-btn');
+                    btn.classList.add('start-task-btn');
+                    delete activeTaskTimers[postId];
+                }
             }
         }
-    }
-});
+    });
+}
 
 
 // --- Point Transfer Logic (Feature 2.3) ---
@@ -506,7 +527,7 @@ async function completeTask(postId, post) {
         if (creatorData) {
             if (!creatorData.isAdmin) {
                 if (creatorData.points < pointsToTransfer) {
-                    return;
+                    return; // Abort transaction
                 }
                 creatorData.points -= pointsToTransfer;
             }
