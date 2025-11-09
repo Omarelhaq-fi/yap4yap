@@ -370,3 +370,102 @@ button:disabled {
         width: 100%;
     }
 }
+
+/* --- NEW STYLES FOR LANDING PAGE (index.html) --- */
+
+.landing-page {
+    background: white; /* Clean white background */
+}
+
+.landing-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.landing-logo {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--brand-dark);
+}
+
+.cta-button {
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--brand-gradient);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.cta-button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.nav-button {
+    width: auto; /* Override full-width button default */
+}
+
+.hero-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+.hero-content {
+    max-width: 700px;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+    color: var(--text-dark);
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-light);
+    margin-bottom: 3rem;
+    line-height: 1.6;
+}
+
+.landing-info-card {
+    max-width: 550px;
+    margin: 0 auto 3rem auto;
+    text-align: left; /* Align list content left */
+}
+
+.cta-button-large {
+    padding: 18px 36px;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+    .landing-header {
+        padding: 1rem;
+    }
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+}
