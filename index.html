@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X Engagement Platform</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- "How It Works" Section (Visible when logged out) -->
+    <div id="how-to-container">
+        <div class="how-to-card">
+            <h2>How It Works</h2>
+            <ol class="how-to-steps">
+                <li><span>1</span> <strong>Register & Get Points:</strong> Sign up for an account and get 60 free points to start.</li>
+                <li><span>2</span> <strong>Complete Tasks:</strong> "Start" a task, complete it, and click "Mark as Complete" to earn points.</li>
+                <li><span>3</span> <strong>Promote Your Posts:</strong> Add your own X (Twitter) post URL and let others engage with your content.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- This container shows when user is LOGGED OUT -->
+    <div id="auth-container">
+        <div class="form-card">
+            <h2 id="form-title">Login</h2>
+            <p id="auth-error" class="error-text"></p>
+            <input type="text" id="auth-username" placeholder="Username">
+            <input type="email" id="auth-email" placeholder="Email (for registration)" style="display: none;">
+            <input type="password" id="auth-password" placeholder="Password">
+            <button id="auth-submit-btn">Login</button>
+            <a href="#" id="toggle-form-link">Need to register?</a>
+        </div>
+    </div>
+
+    <!-- This container shows when user is LOGGED IN -->
+    <div id="app-container" style="display: none;">
+        
+        <!-- Header -->
+        <header>
+            <div class="logo">Yap 4 Yap</div>
+            <div class="user-info">
+                <span id="user-display"></span>
+                <span id="points-display" class="points-badge"></span>
+                <button id="logout-btn" class="btn-danger">Logout</button>
+            </div>
+        </header>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>My Points</h3>
+                <p id="stat-points">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Tasks Completed</h3>
+                <p id="stat-tasks">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>My Posts</h3>
+                <p id="stat-posts">0</p>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="main-grid">
+            
+            <!-- Column 1: Create Task & My Posts -->
+            <div class="column">
+                <div class="card">
+                    <h3>Promote Your Post</h3>
+                    <form id="create-post-form">
+                        <p id="post-error" class="error-text"></p>
+                        <input type="url" id="post-url" placeholder="https://x.com/username/status/..." required>
+                        <div class="radio-group">
+                            <label><input type="radio" name="taskType" value="like" checked> Like (10 pts)</label>
+                            <label><input type="radio" name="taskType" value="comment"> Comment (20 pts)</label>
+                            <label><input type="radio" name="taskType" value="both"> Both (30 pts)</label>
+                        </div>
+                        <button type="submit" id="create-post-btn">Create Post (Free)</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h3>My Posts</h3>
+                    <div id="my-posts-list" class="task-list">
+                        <!-- My posts will be loaded here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 2: Available Tasks -->
+            <div class="column">
+                <div class="card">
+                    <h3>Available Tasks</h3>
+                    <div id="available-tasks-list" class="task-list">
+                        <!-- Tasks will be loaded here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+
+    <!-- Your App Logic -->
+    <script src="app.js"></script>
+</body>
+</html>

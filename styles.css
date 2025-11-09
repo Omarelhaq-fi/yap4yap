@@ -1,0 +1,305 @@
+/* Basic Setup */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: linear-gradient(to right, #667eea, #764ba2);
+    color: #333;
+    min-height: 100vh;
+}
+
+/* --- Authentication Page --- */
+#auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0 40px 0; /* Padding */
+}
+
+/* NEW: "How It Works" Section */
+#how-to-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 40px; /* Space from top */
+    color: #333;
+}
+
+.how-to-card {
+    background: white;
+    padding: 1.5rem 2rem 2rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    width: 450px;
+    max-width: 90%;
+    box-sizing: border-box;
+}
+
+.how-to-card h2 {
+    text-align: center;
+    margin-top: 0;
+    color: #667eea;
+}
+
+.how-to-steps {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.how-to-steps li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+.how-to-steps li:last-child {
+    margin-bottom: 0;
+}
+
+.how-to-steps li span {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(to right, #667eea, #764ba2);
+    color: white;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-right: 12px;
+    margin-top: -2px; /* Aligns number with text */
+}
+
+.how-to-steps li strong {
+    margin-right: 5px;
+}
+/* END NEW STYLES */
+
+.form-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    width: 350px;
+    max-width: 90%;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+#auth-container input {
+    display: block;
+    width: 90%;
+    padding: 10px;
+    margin: 10px auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#auth-container button {
+    width: 95%;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    background: linear-gradient(to right, #667eea, #764ba2);
+    margin-top: 10px;
+}
+
+#toggle-form-link {
+    display: block;
+    margin-top: 15px;
+    color: #667eea;
+    text-decoration: none;
+}
+
+/* --- Main App Layout --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    color: white;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.points-badge {
+    background: rgba(0,0,0,0.2);
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+.stat-card h3 { margin-top: 0; }
+.stat-card p {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #667eea;
+}
+
+/* Main Content Grid */
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 0 20px 20px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+.task-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* --- Forms & Buttons --- */
+input[type="url"], input[type="text"], input[type="password"], input[type="email"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box; /* Added for consistency */
+}
+
+.radio-group {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 15px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    background: linear-gradient(to right, #667eea, #764ba2);
+}
+button:hover { opacity: 0.9; }
+button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.btn-danger {
+    background: #e74c3c;
+}
+
+.btn-success {
+    background: #2ecc71;
+}
+
+.error-text {
+    color: #e74c3c;
+    font-size: 0.9rem;
+    display: none; /* Hidden by default */
+    text-align: left;
+    margin-top: 10px;
+}
+
+/* --- Task Card Styling --- */
+.task-card {
+    border: 1px solid #eee;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.task-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.task-badge {
+    padding: 3px 8px;
+    border-radius: 10px;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+.badge-like { background-color: #e74c3c; }
+.badge-comment { background-color: #3498db; }
+.badge-both { background-color: #f39c12; }
+
+.task-card-body {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 10px;
+}
+.task-card-body a {
+    color: #667eea;
+    word-break: break-all;
+}
+
+.task-card-footer {
+    display: flex;
+    justify-content: flex-end; /* Aligns button to the right */
+    align-items: center;
+    margin-top: 15px;
+}
+
+/* Specific button width for task card footer */
+.task-card-footer button {
+    width: auto; /* Override 100% width */
+    padding: 8px 12px; /* Smaller button */
+}
+
+/* Verification UI text */
+.verification-ui .error-text {
+    margin-top: 10px;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+
+/* Responsive Layout for Mobile */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    .main-grid {
+        grid-template-columns: 1fr;
+    }
+}
