@@ -1,120 +1,117 @@
 /* Basic Setup */
+:root {
+    --brand-gradient: linear-gradient(to right, #667eea, #764ba2);
+    --brand-dark: #667eea;
+    --success: #2ecc71;
+    --danger: #e74c3c;
+    --warning: #f39c12;
+    --info: #3498db;
+    --light-gray: #f4f7f6;
+    --text-dark: #2c3e50;
+    --text-light: #576574;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', sans-serif;
     margin: 0;
-    background: linear-gradient(to right, #667eea, #764ba2);
-    color: #333;
+    background: var(--light-gray);
+    color: var(--text-dark);
     min-height: 100vh;
 }
 
 /* --- Authentication Page --- */
 #auth-container {
     display: flex;
+    flex-direction: column; /* Stack "How To" and "Login" */
     justify-content: center;
     align-items: center;
-    padding: 20px 0 40px 0; /* Padding */
-}
-
-/* NEW: "How It Works" Section */
-#how-to-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 40px; /* Space from top */
-    color: #333;
-}
-
-.how-to-card {
-    background: white;
-    padding: 1.5rem 2rem 2rem 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    width: 450px;
-    max-width: 90%;
+    min-height: 100vh;
+    padding: 20px;
     box-sizing: border-box;
+    background: var(--brand-gradient); /* Gradient background for login page */
 }
 
-.how-to-card h2 {
+.form-card, .info-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 450px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.form-card {
+    text-align: center;
+}
+
+/* "How It Works" Card */
+.info-card {
+    margin-bottom: 2rem;
+}
+.info-card h3 {
     text-align: center;
     margin-top: 0;
-    color: #667eea;
+    color: var(--text-dark);
 }
-
-.how-to-steps {
+.how-to-list {
     list-style: none;
     padding-left: 0;
     margin: 0;
 }
-
-.how-to-steps li {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 15px;
-    font-size: 0.95rem;
-    line-height: 1.4;
+.how-to-list li {
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-left: 35px;
 }
-.how-to-steps li:last-child {
-    margin-bottom: 0;
-}
-
-.how-to-steps li span {
-    flex-shrink: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.how-to-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 3px;
     width: 24px;
     height: 24px;
+    background: var(--brand-gradient);
     border-radius: 50%;
-    background: linear-gradient(to right, #667eea, #764ba2);
-    color: white;
-    font-weight: bold;
-    font-size: 0.9rem;
-    margin-right: 12px;
-    margin-top: -2px; /* Aligns number with text */
+}
+.how-to-list li strong {
+    display: block;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+}
+.how-to-list li p {
+    margin: 0;
+    color: var(--text-light);
 }
 
-.how-to-steps li strong {
-    margin-right: 5px;
-}
-/* END NEW STYLES */
-
-.form-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    width: 350px;
-    max-width: 90%;
-    text-align: center;
-    box-sizing: border-box;
-}
 
 #auth-container input {
     display: block;
-    width: 90%;
-    padding: 10px;
-    margin: 10px auto;
+    width: 100%;
+    padding: 14px;
+    margin: 15px auto;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
 }
 
 #auth-container button {
-    width: 95%;
-    padding: 12px;
-    border: none;
-    border-radius: 4px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    background: linear-gradient(to right, #667eea, #764ba2);
-    margin-top: 10px;
+    width: 100%;
 }
 
 #toggle-form-link {
     display: block;
     margin-top: 15px;
-    color: #667eea;
+    color: var(--brand-dark);
     text-decoration: none;
+    font-weight: 500;
+}
+#toggle-form-link:hover {
+    text-decoration: underline;
 }
 
 /* --- Main App Layout --- */
@@ -122,184 +119,254 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    color: white;
+    padding: 1.5rem 2.5rem;
+    background: white;
+    color: var(--text-dark);
+    border-bottom: 1px solid #e0e0e0;
 }
 
 .logo {
     font-size: 1.5rem;
-    font-weight: bold;
+    font-weight: 700;
+    color: var(--brand-dark);
 }
 
 .user-info {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 20px;
+    font-weight: 500;
 }
 
 .points-badge {
-    background: rgba(0,0,0,0.2);
-    padding: 5px 10px;
+    background: var(--light-gray);
+    padding: 8px 16px;
     border-radius: 20px;
-    font-weight: bold;
+    font-weight: 600;
+    color: var(--brand-dark);
 }
 
 /* Stats Grid */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    padding: 20px;
+    gap: 25px;
+    padding: 25px;
 }
 
 .stat-card {
     background: white;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
-.stat-card h3 { margin-top: 0; }
+.stat-card h3 { 
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: var(--text-light);
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.stat-card svg {
+    color: var(--brand-dark);
+}
 .stat-card p {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #667eea;
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0;
 }
 
 /* Main Content Grid */
 .main-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    padding: 0 20px 20px;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 25px;
+    padding: 0 25px 25px;
 }
 
 .card {
     background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    margin-bottom: 20px;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-bottom: 25px;
+}
+.card h3 {
+    margin-top: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
 }
 
 .task-list {
-    max-height: 400px;
+    max-height: 450px;
     overflow-y: auto;
+    padding-right: 10px; /* For scrollbar */
+}
+.task-list p {
+    color: var(--text-light);
+    padding: 20px 0;
+    text-align: center;
 }
 
 /* --- Forms & Buttons --- */
 input[type="url"], input[type="text"], input[type="password"], input[type="email"] {
-    width: calc(100% - 20px);
-    padding: 10px;
+    width: 100%;
+    padding: 14px;
     margin-bottom: 15px;
     border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box; /* Added for consistency */
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
 }
 
 .radio-group {
     display: flex;
     justify-content: space-around;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    color: var(--text-light);
+    font-weight: 500;
+}
+.radio-group input {
+    margin-right: 5px;
 }
 
 button {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     color: white;
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
     cursor: pointer;
-    background: linear-gradient(to right, #667eea, #764ba2);
+    background: var(--brand-gradient);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
-button:hover { opacity: 0.9; }
+button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
 button:disabled {
     background: #ccc;
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 .btn-danger {
-    background: #e74c3c;
+    background: var(--danger);
 }
-
+.btn-danger:hover {
+    background: var(--danger);
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+}
 .btn-success {
-    background: #2ecc71;
+    background: var(--success);
+}
+.btn-success:hover {
+    background: var(--success);
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
 }
 
 .error-text {
-    color: #e74c3c;
+    color: var(--danger);
     font-size: 0.9rem;
     display: none; /* Hidden by default */
-    text-align: left;
-    margin-top: 10px;
+    background: rgba(231, 76, 60, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
 }
 
 /* --- Task Card Styling --- */
 .task-card {
     border: 1px solid #eee;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    transition: box-shadow 0.2s ease;
+}
+.task-card:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.07);
 }
 
 .task-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .task-badge {
-    padding: 3px 8px;
-    border-radius: 10px;
+    padding: 4px 12px;
+    border-radius: 20px;
     color: white;
     font-size: 0.8rem;
-    font-weight: bold;
+    font-weight: 600;
+    text-transform: uppercase;
 }
-.badge-like { background-color: #e74c3c; }
-.badge-comment { background-color: #3498db; }
-.badge-both { background-color: #f39c12; }
+.badge-like { background-color: var(--danger); }
+.badge-comment { background-color: var(--info); }
+.badge-both { background-color: var(--warning); }
 
 .task-card-body {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: #555;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 .task-card-body a {
-    color: #667eea;
+    color: var(--brand-dark);
     word-break: break-all;
+    font-weight: 500;
+    text-decoration: none;
+}
+.task-card-body a:hover {
+    text-decoration: underline;
 }
 
 .task-card-footer {
     display: flex;
-    justify-content: flex-end; /* Aligns button to the right */
+    justify-content: flex-end; /* Align button to the right */
     align-items: center;
-    margin-top: 15px;
 }
-
-/* Specific button width for task card footer */
 .task-card-footer button {
-    width: auto; /* Override 100% width */
-    padding: 8px 12px; /* Smaller button */
+    width: auto; /* Allow button to size to content */
+    padding: 10px 20px;
+    font-size: 0.9rem;
 }
-
-/* Verification UI text */
-.verification-ui .error-text {
-    margin-top: 10px;
-    margin-bottom: 0;
-    text-align: center;
-}
-
 
 /* Responsive Layout for Mobile */
+@media (max-width: 900px) {
+    .main-grid {
+        grid-template-columns: 1fr;
+    }
+}
 @media (max-width: 768px) {
     .stats-grid {
         grid-template-columns: 1fr;
     }
-    .main-grid {
-        grid-template-columns: 1fr;
+    header {
+        flex-direction: column;
+        gap: 15px;
+        padding: 1.5rem;
+    }
+    .user-info {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+    .user-info button {
+        width: 100%;
     }
 }
