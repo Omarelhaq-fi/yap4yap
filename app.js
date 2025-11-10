@@ -29,6 +29,7 @@ const TASK_TIMES = { // Your Feature 3.3
     comment: 7,
     both: 11
 };
+const INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5 minutes in milliseconds
 
 // --- Global State ---
 let currentUser = null; // Will hold all user data (auth + db data)
@@ -36,6 +37,7 @@ let allPosts = {}; // Local cache of all posts
 let myPosts = {}; // Local cache of user's own posts
 let allUsers = {};
 let activeTaskTimers = {}; // For hidden timers
+let inactivityTimer = null; // For inactivity filter
 
 // --- DOM Elements ---
 const authContainer = document.getElementById('auth-container');
@@ -59,6 +61,11 @@ const availableTasksList = document.getElementById('available-tasks-list');
 const statPoints = document.getElementById('stat-points');
 const statTasks = document.getElementById('stat-tasks');
 const statPosts = document.getElementById('stat-posts');
+
+// New inactivity elements
+const inactivityOverlay = document.getElementById('inactivity-overlay');
+const reconnectBtn = document.getElementById('reconnect-btn');
+
 
 // --- Auth UI Toggle ---
 let isRegisterMode = false;
@@ -157,8 +164,19 @@ auth.onAuthStateChanged(user => {
             
             authContainer.style.display = 'none';
             appContainer.style.display = 'block';
+
+            // --- ADD THIS LINE ---
+            setupInactivityListeners(); // Start tracking activity
+
         } else {
             // User is logged out
+
+            // --- ADD THESE LINES ---
+            clearInactivityListeners(); // Stop tracking activity
+            if (inactivityOverlay) { // Hide modal if it's open
+                 inactivityOverlay.style.display = 'none';
+            }
+            // --- END ADD ---
             
             if (currentUser) {
                 // Stop listening to the specific user's data
@@ -428,7 +446,7 @@ function startVerification(button, post, postId) {
             return;
         }
 
-        activeTaskTimtimers[postId] = { timeSpent: timeSpent, requiredTime: requiredTime, tabClosed: false, interval: timerInterval, tab: newTab };
+        activeTaskTimers[postId] = { timeSpent: timeSpent, requiredTime: requiredTime, tabClosed: false, interval: timerInterval, tab: newTab };
 
     }, 1000); 
     
@@ -547,5 +565,82 @@ async function completeTask(postId, post) {
             completerData.completedTasks[postId] = true;
         }
         return completerData;
+    });
+}
+
+
+// --- Phase 6: Inactivity Management ---
+// (This is the new block of code)
+
+/**
+ * Disconnects the user from Firebase RTDB and shows the inactivity modal.
+ */
+function disconnectForInactivity() {
+    console.log('User inactive for 5 minutes. Disconnecting from RTDB.');
+    firebase.database().goOffline();
+    if (inactivityOverlay) {
+        inactivityOverlay.style.display = 'flex';
+    }
+}
+
+/**
+ * Resets the 5-minute inactivity timer.
+ */
+function resetInactivityTimer() {
+    // Clear the old timer
+    if (inactivityTimer) {
+        clearTimeout(inactivityTimer);
+    }
+    
+    // Start a new timer
+    // We only set the timer if the user is actually logged in (currentUser exists)
+    if (currentUser) {
+        inactivityTimer = setTimeout(disconnectForInactivity, INACTIVITY_TIMEOUT);
+    }
+}
+
+/**
+ * Adds window-wide event listeners to detect user activity.
+ */
+function setupInactivityListeners() {
+    // Events that count as "activity"
+    window.addEventListener('mousemove', resetInactivityTimer);
+    window.addEventListener('keydown', resetInactivityTimer);
+    window.addEventListener('click', resetInactivityTimer);
+    window.addEventListener('scroll', resetInactivityTimer);
+    
+    // Start the timer for the first time
+    console.log('Setting up inactivity timer.');
+    resetInactivityTimer();
+}
+
+/**
+ * Removes all inactivity listeners and clears the timer.
+ */
+function clearInactivityListeners() {
+    console.log('Clearing inactivity timer.');
+    if (inactivityTimer) {
+        clearTimeout(inactivityTimer);
+    }
+    window.removeEventListener('mousemove', resetInactivityTimer);
+    window.removeEventListener('keydown', resetInactivityTimer);
+    window.removeEventListener('click', resetInactivityTimer);
+    window.removeEventListener('scroll', resetInactivityTimer);
+}
+
+/**
+ * Handles the "Reconnect" button click.
+ */
+if (reconnectBtn) {
+    reconnectBtn.addEventListener('click', () => {
+        console.log('User reconnecting...');
+        firebase.database().goOnline(); // Reconnect to Firebase
+        
+        if (inactivityOverlay) {
+            inactivityOverlay.style.display = 'none'; // Hide the modal
+        }
+        
+        // Restart the inactivity timer
+        resetInactivityTimer();
     });
 }
