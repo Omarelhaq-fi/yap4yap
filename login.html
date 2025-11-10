@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>X Engagement Platform</title>
-    <!-- Modern Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,10 +11,8 @@
 </head>
 <body>
 
-    <!-- This container shows when user is LOGGED OUT -->
     <div id="auth-container">
         
-        <!-- "How It Works" Card -->
         <div class="info-card" id="how-to-container">
             <h3>How It Works</h3>
             <ol class="how-to-list">
@@ -34,7 +31,6 @@
             </ol>
         </div>
         
-        <!-- Login/Register Card -->
         <div class="form-card">
             <h2 id="form-title">Login</h2>
             <p id="auth-error" class="error-text"></p>
@@ -46,10 +42,8 @@
         </div>
     </div>
 
-    <!-- This container shows when user is LOGGED IN -->
     <div id="app-container" style="display: none;">
         
-        <!-- Header -->
         <header>
             <div class="logo">Yap4Yap Beta Version</div>
             <div class="user-info">
@@ -65,7 +59,6 @@
             </div>
         </header>
 
-        <!-- Stats Cards -->
         <div class="stats-grid">
             <div class="stat-card">
                 <h3>
@@ -102,10 +95,8 @@
             </div>
         </div>
 
-        <!-- Main Content Grid -->
         <div class="main-grid">
             
-            <!-- Column 1: Create Task & My Posts -->
             <div class="column">
                 <div class="card">
                     <h3>Promote Your Post</h3>
@@ -129,29 +120,33 @@
                 <div class="card">
                     <h3>My Posts</h3>
                     <div id="my-posts-list" class="task-list">
-                        <!-- My posts will be loaded here by JavaScript -->
-                    </div>
+                        </div>
                 </div>
             </div>
 
-            <!-- Column 2: Available Tasks -->
             <div class="column">
                 <div class="card">
                     <h3>Available Tasks</h3>
                     <div id="available-tasks-list" class="task-list">
-                        <!-- Tasks will be loaded here by JavaScript -->
-                    </div>
+                        </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Firebase SDKs (using compat libraries for your existing code) -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 
-    <!-- Your App Logic -->
+
+    <div id="inactivity-overlay" style="display: none;">
+        <div id="inactivity-modal">
+            <h2>You've been disconnected</h2>
+            <p>You were disconnected due to inactivity click reconnect to go back</p>
+            <button id="reconnect-btn">Reconnect Now</button>
+        </div>
+    </div>
     <script src="app.js"></script>
+
 </body>
 </html>
