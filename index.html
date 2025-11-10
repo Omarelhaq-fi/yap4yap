@@ -1,56 +1,213 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yap4Yap - Get Real Engagement</title>
-    <!-- Modern Font -->
+    <title>Web3 Toolkit - The Future of Web3 Tools</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font (Inter) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body class="landing-page">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Custom styles for animations and gradients */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0B1120; /* Deep navy background */
+        }
+        
+        /* Animated gradient background for hero */
+        .hero-gradient {
+            background: linear-gradient(135deg, #0B1120 0%, #1A233A 50%, #0B1120 100%);
+            background-size: 400% 400%;
+            animation: gradient-flow 15s ease infinite;
+        }
 
-    <header class="landing-header">
-        <div class="landing-logo">Yap4Yap</div>
-        <a href="login.html" class="cta-button nav-button">Login / Sign Up</a>
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Animated gradient text */
+        .gradient-text {
+            background: linear-gradient(to right, #667eea, #764ba2, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+        
+        /* Glassmorphism effect for cards */
+        .glass-card {
+            background: rgba(26, 35, 58, 0.6); /* Semi-transparent navy */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: 100%; /* Make cards in grid equal height */
+        }
+        
+        /* Fade-in-up animation on scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .reveal-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Removed all slider styles */
+    </style>
+</head>
+<body class="text-gray-200 antialiased">
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-opacity-80 backdrop-blur-md border-b border-gray-800">
+        <nav class="container mx-auto max-w-6xl px-4 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold gradient-text">
+                Web3 Toolkit
+            </div>
+            <a href="YapIT/login.html" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2 px-5 rounded-lg transition-all duration-300 transform hover:scale-105">
+                Launch YapIT
+            </a>
+        </nav>
     </header>
 
-    <main class="hero-section">
-        <div class="hero-content">
-            <h1>Get Real Engagement on Your X Posts</h1>
-            <p class="hero-subtitle">
-                Yap4Yap is a community where you earn points by engaging with others,
-                and spend those points to have others engage with your posts.
-            </p>
-            
-            <div class="info-card landing-info-card">
-                <h3>How It Works</h3>
-                <ol class="how-to-list">
-                    <li>
-                        <strong>1. Sign Up for Free</strong>
-                        <p>Get 60 starter points just for joining.</p>
-                    </li>
-                    <li>
-                        <strong>2. Earn More Points</strong>
-                        <p>Complete simple tasks (likes/comments) to earn points from other users.</p>
-                    </li>
-                    <li>
-                        <strong>3. Get Engagement</strong>
-                        <p>Spend your points to get real users to like and comment on your own X posts - Made especially for yappers/quackers!</p>
-                    </li>
-                </ol>
+    <!-- Main Content -->
+    <main class="pt-20">
+
+        <!-- Hero Section -->
+        <section class="hero-gradient pt-24 pb-32 text-center overflow-hidden">
+            <div class="container mx-auto max-w-4xl px-4">
+                <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 reveal">
+                    Build, Launch, and Grow
+                    <span class="block gradient-text">in Web3.</span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10 reveal" style="transition-delay: 200ms;">
+                    Welcome to Web3 Toolkit. We build decentralized, community-driven applications
+                    to help you succeed in the new digital economy.
+                </p>
+                <div class="reveal" style="transition-delay: 400ms;">
+                    <a href="#products" class="bg-white text-gray-900 font-bold py-3 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-indigo-500/20">
+                        See Our Products
+                    </a>
+                </div>
             </div>
+        </section>
+
+        <!-- Product Grid Section (Replaced Slider) -->
+        <section id="products" class="py-24 bg-slate-900">
+            <div class="container mx-auto max-w-6xl px-4">
             
-            <a href="login.html" class="cta-button cta-button-large">
-                Get Started for Free
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
-                </svg>
-            </a>
-        </div>
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white mt-2 reveal" style="transition-delay: 150ms;">
+                        Our Product Toolkit
+                    </h2>
+                    <p class="text-lg text-gray-400 mt-4 max-w-2xl mx-auto reveal" style="transition-delay: 300ms;">
+                        Community-driven tools to help you build and grow in Web3.
+                    </p>
+                </div>
+
+                <!-- Product Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 reveal">
+
+                    <!-- Product 1: YapIT -->
+                    <div class="glass-card rounded-2xl p-8 shadow-2xl shadow-indigo-900/30 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-3xl font-bold text-white">YapIT</h3>
+                                <span class="flex-shrink-0 text-base align-top font-medium text-green-400 bg-green-900/50 px-3 py-1 rounded-full">Live</span>
+                            </div>
+                            <p class="text-gray-300 mb-6">The community-driven platform to get real engagement on your X (formerly Twitter) posts.</p>
+                            <ol class="space-y-4 mb-8">
+                                <li class="flex items-center space-x-3">
+                                    <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                    <span class="text-gray-300">Sign up and get 60 starter points.</span>
+                                </li>
+                                <li class="flex items-center space-x-3">
+                                    <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                    <span class="text-gray-300">Complete simple tasks to earn more.</span>
+                                </li>
+                                <li class="flex items-center space-x-3">
+                                    <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                    <span class="text-gray-300">Spend points to get likes & comments.</span>
+                                </li>
+                            </ol>
+                        </div>
+                        <a href="YapIT/login.html" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-6 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 text-center">
+                            Launch YapIT
+                        </a>
+                    </div>
+
+                    <!-- Product 2: AI X Reply -->
+                    <div class="glass-card rounded-2xl p-8 shadow-2xl shadow-indigo-900/30 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-3xl font-bold text-white">AI X Reply Extension</h3>
+                                <span class="flex-shrink-0 text-base align-top font-medium text-yellow-400 bg-yellow-900/50 px-3 py-1 rounded-full">Coming Soon</span>
+                            </div>
+                            <p class="text-gray-300 mb-6">An intelligent browser extension to generate context-aware, human-like replies instantly.</p>
+                            <ul class="space-y-4 mb-8">
+                                <li class="flex items-center space-x-3">
+                                    <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                    <span class="text-gray-300">Analyzes post context and tone.</span>
+                                </li>
+                                <li class="flex items-center space-x-3">
+                                    <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                    <span class="text-gray-300">Generates multiple reply options.</span>
+                                </li>
+                                <li class="flex items-center space-x-3">
+                                    <svg classG="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                    <span class="text-gray-300">Saves you hours of time.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <a href="#" class="w-full bg-gray-600 text-white font-bold py-3 px-6 rounded-lg cursor-not-allowed opacity-70 text-center">
+                            Notify Me
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+        
     </main>
 
+    <!-- Footer -->
+    <footer class="border-t border-gray-800 bg-slate-900">
+        <div class="container mx-auto max-w-6xl px-4 py-8 text-center text-gray-500">
+            &copy; 2025 Web3 Toolkit. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        // Simple fade-in-on-scroll animation
+        document.addEventListener("DOMContentLoaded", () => {
+            const reveals = document.querySelectorAll(".reveal");
+
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("reveal-visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            reveals.forEach(reveal => {
+                observer.observe(reveal);
+            });
+
+            // Removed all slider logic
+        });
+    </script>
 </body>
 </html>
